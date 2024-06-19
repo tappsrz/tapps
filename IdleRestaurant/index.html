@@ -10,15 +10,11 @@
   <meta name='full-screen' content='true' />
   <meta name='x5-fullscreen' content='true' />
   <meta name='360-fullscreen' content='true' />
-  <title>{{{ PRODUCT_NAME }}}</title>
+  <title>Dish Up</title>
   <link rel="shortcut icon" href="TemplateData/favicon.ico">
   <link rel="stylesheet" href="TemplateData/style.css">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="TemplateData/bundle.js"></script>
-  #if SHOW_DIAGNOSTICS
-  <link rel="stylesheet" href="<<<TemplateData/diagnostics.css>>>">
-  <script src="<<<TemplateData/diagnostics.js>>>"></script>
-  #endif
   <!-- <script>
         var container = document.querySelector("#unity-container");
         container.style.width = window.innerWidth + "px";
@@ -99,26 +95,15 @@
 
 
     var buildUrl = "Build";
-    var loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}";
+    var loaderUrl = buildUrl + "/WebGL.loader.js";
     var config = {
-      dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
-      frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
-      #if USE_THREADS
-        workerUrl: buildUrl + "/{{{ WORKER_FILENAME }}}",
-      #endif
-#if USE_WASM
-        codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
-      #endif
-#if MEMORY_FILENAME
-        memoryUrl: buildUrl + "/{{{ MEMORY_FILENAME }}}",
-      #endif
-#if SYMBOLS_FILENAME
-        symbolsUrl: buildUrl + "/{{{ SYMBOLS_FILENAME }}}",
-      #endif
+      dataUrl: buildUrl + "/WebGL.data",
+      frameworkUrl: buildUrl + "/WebGL.framework.js",
+        codeUrl: buildUrl + "/WebGL.wasm",
         streamingAssetsUrl: "StreamingAssets" ,
-      companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
-    productName: {{{ JSON.stringify(PRODUCT_NAME)}}},
-    productVersion: {{{ JSON.stringify(PRODUCT_VERSION)}}},
+      companyName: "rongzong",
+    productName: "Dish Up",
+    productVersion: "2.0",
     // showBanner: unityShowBanner,
     matchWebGLToCanvasSize: true, // Uncomment this to separately control WebGL canvas render size and DOM element size.
       devicePixelRatio: 720 / window.innerWidth, // Uncomment this to override low DPI rendering on high DPI displays.
@@ -167,13 +152,13 @@
     //       } else {
     //         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
-    //         canvas.style.width = "{{{ WIDTH }}}px";
-    //         canvas.style.height = "{{{ HEIGHT }}}px";
+    //         canvas.style.width = "540px";
+    //         canvas.style.height = "960px";
     //       }
 
 
     // #if BACKGROUND_FILENAME
-    //       canvas.style.background = "url('" + buildUrl + "/{{{ BACKGROUND_FILENAME.replace(/'/g, '%27') }}}') center / cover";
+    //       canvas.style.background = "url('" + buildUrl + "/') center / cover";
     // #endif
     loadingBar.style.display = "block";
 
