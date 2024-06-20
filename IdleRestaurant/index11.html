@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name='viewport'
+    content='width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+  <meta name='apple-mobile-web-app-capable' content='yes' />
+  <meta name='full-screen' content='true' />
+  <meta name='x5-fullscreen' content='true' />
+  <meta name='360-fullscreen' content='true' />
+  <title>Dish Up</title>
+  <link rel="shortcut icon" href="TemplateData/favicon.ico">
+  <link rel="stylesheet" href="TemplateData/style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="TemplateData/bundle.js"></script>
+  <!--谷歌utm相关代码，引入js -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3WZ8DT6BC2"></script>
+</head>
+
+<body>
+  <div id="unity-container" class="unity-desktop" style="width:100%; height:100%">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="unity-loading-bar">
+      <div id="unity-logo"></div>
+      <div id="unity-progress-bar-empty">
+        <div id="unity-progress-bar-full"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var container = document.querySelector("#unity-container");
+    var canvas = document.querySelector("#unity-canvas");
+    var loadingBar = document.querySelector("#unity-loading-bar");
+    var progressBarFull = document.querySelector("#unity-progress-bar-full");
+    function ChangeCanvas() {
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = Telegram.WebApp.viewportStableHeight + "px";
+      container.style.width = window.innerWidth + "px";
+      container.style.height = Telegram.WebApp.viewportStableHeight + "px";
+    }
+    Telegram.WebApp.themeParams.bg_color = "#000000";
+    Telegram.WebApp.enableClosingConfirmation();
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/WegGL.loader.js";
+    var config = {
+      dataUrl: buildUrl + "/WegGL.data",
+      frameworkUrl: buildUrl + "/WegGL.framework.js",
+        codeUrl: buildUrl + "/WegGL.wasm",
+        streamingAssetsUrl: "StreamingAssets" ,
+      companyName: "rongzong",
+    productName: "Dish Up",
+    productVersion: "2.0",
+    matchWebGLToCanvasSize: true, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+      devicePixelRatio: 720 / window.innerWidth, // Uncomment this to override low DPI rendering on high DPI displays.
+    };
+    Telegram.WebApp.onEvent("viewportChanged", (isStateStable) => {
+      if (isStateStable) {
+        ChangeCanvas();
+        document.body.style.overflow = "hidden";
+      }
+    })
+    const overflow = 1
+    document.body.style.overflowY = 'hidden'
+    document.body.style.marginTop = `${overflow}px`
+    document.body.style.height = window.innerHeight + overflow + "px"
+    document.body.style.paddingBottom = `${overflow}px`
+    window.scrollTo(0, overflow)
+    loadingBar.style.display = "block";
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = () => {
+      window["Telegram"].WebApp.expand();
+      window["Telegram"].WebApp.ready();
+      
+      createUnityInstance(canvas, config, (progress) => {
+        progressBarFull.style.width = 100 * progress + "%";
+      }).then((unityInstance) => {
+        loadingBar.style.display = "none";
+      }).catch((message) => {
+        alert(message);
+      });
+    };
+    document.documentElement.addEventListener('touchmove', (e)=>{e.preventDefault()}, { passive: false });
+    document.body.appendChild(script);
+    ChangeCanvas();
+  </script>
+  <script>
+    function openLink(str){
+      Telegram.WebApp.openLink(str);
+    }
+    function share(text) {
+
+    };
+    function getStartParams() {
+      return Telegram.WebApp.initDataUnsafe.start_param;
+    }
+    function OpenTgLink(url) {
+      console.log("OpenTgLink:"+url);
+      Telegram.WebApp.openTelegramLink(url);
+    }
+    function CloseAppJs() {
+      Telegram.WebApp.close();
+    }
+    function login() {
+      return Telegram.WebApp.initData + "\n\n" + JSON.stringify({
+        Id: Telegram.WebApp.initDataUnsafe.user.id,
+        IsBot: Telegram.WebApp.initDataUnsafe.user.is_bot,
+        FirstName: Telegram.WebApp.initDataUnsafe.user.first_name,
+        LastName: Telegram.WebApp.initDataUnsafe.user.last_name,
+        Username: Telegram.WebApp.initDataUnsafe.user.username,
+        LanguageCode: Telegram.WebApp.initDataUnsafe.user.language_code,
+        IsPremium: Telegram.WebApp.initDataUnsafe.user.is_premium,
+        AddedToAttachmentMenu: Telegram.WebApp.initDataUnsafe.user.added_to_attachment_menu,
+        AllowsWriteToPm: Telegram.WebApp.initDataUnsafe.user.allows_write_to_pm,
+        PhotoUrl: Telegram.WebApp.initDataUnsafe.user.photo_url
+      });
+    }
+    function copy(e){
+      e && writeText(e).then(()=>{
+                console.log("write text success")
+            }
+            ).catch(()=>{
+                this.execCopy(e).then(()=>{
+                    console.log("exec copy success")
+                }
+                ).catch(()=>{
+                    console.log("exec copy faile")
+                }
+                )
+            }
+            )
+    }
+    function writeText(o) {
+            return new Promise((e,t)=>{
+                navigator && navigator.clipboard ? navigator.clipboard.writeText(o).then(()=>{
+                    e()
+                }
+                ).catch(()=>{
+                    console.log("writeText error"),
+                    t()
+                }
+                ) : t()
+            }
+            )
+        }
+      function  execCopy(n) {
+            return new Promise((e,t)=>{
+                let o = document.createElement("textarea");
+                o.value = n,
+                o.style.position = "absolute",
+                o.style.opacity = "0",
+                o.style.left = "-999999px",
+                o.style.top = "-999999px",
+                document.body.appendChild(o),
+                o.focus(),
+                o.select();
+                var a = document.execCommand("copy");
+                o.remove(),
+                (a ? e : t)()
+            }
+            )
+        }
+  </script>
+  <!-- 谷歌utm相关代码：判断startParam，如果startparam的值都是大写字母或者大写字母和数字的组合，则campaign_source=share，campaign_medium=startParam，如果不是，则campaign_source=startParam，campaign_medium为空 -->
+  <script>
+    // 获取并打印当前窗口的 URL
+    const currentUrl = window.location.href;
+    console.log("当前窗口的 URL:", currentUrl);
+    // 初始化并获取参数
+    Telegram.WebApp.ready();
+    const initData = Telegram.WebApp.initDataUnsafe;
+    const startParam = initData && initData.start_param;
+    console.log("initData:", initData);
+    console.log("start_param:", startParam);
+
+    // 新增逻辑判断
+    let campaignSource = "";
+    let campaignMedium = "";
+
+    if (startParam) {
+      // 正则表达式检查startParam是否全部由大写字母或大写字母与数字组成
+      const isUpperCaseOrDigits = /^[A-Z0-9]+$/.test(startParam);
+
+      if (isUpperCaseOrDigits) {
+        campaignSource = "share";
+        campaignMedium = startParam;
+      } else {
+        campaignSource = startParam;
+      }
+    }
+    console.log("campaignSource:",campaignSource);
+    console.log("campaignMedium:",campaignMedium);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3WZ8DT6BC2', {
+      'campaign_source': campaignSource, // 动态设置campaign_source
+      'campaign_medium': campaignMedium // 动态设置campaign_medium
+    });
+</script>
+</body>
+
+</html>
