@@ -20,6 +20,9 @@
         container.style.width = window.innerWidth + "px";
         container.style.height = (Telegram.WebApp.viewportStableHeight - 10) + "px";
     </script> -->
+
+     <!--谷歌utm相关代码，引入js -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3WZ8DT6BC2"></script>
 </head>
 
 <body>
@@ -271,6 +274,45 @@
 
   gtag('config', 'G-BKBXLG8BJ2');
 </script>
+
+<!-- 谷歌utm相关代码：判断startParam，如果startparam的值都是大写字母或者大写字母和数字的组合，则campaign_source=share，campaign_medium=startParam，如果不是，则campaign_source=startParam，campaign_medium为空 -->
+<script>
+  // 获取并打印当前窗口的 URL
+  const currentUrl = window.location.href;
+  console.log("当前窗口的 URL:", currentUrl);
+  // 初始化并获取参数
+  Telegram.WebApp.ready();
+  const initData = Telegram.WebApp.initDataUnsafe;
+  const startParam = initData && initData.start_param;
+  console.log("initData:", initData);
+  console.log("start_param:", startParam);
+
+  // 新增逻辑判断
+  let campaignSource = "";
+  let campaignMedium = "";
+
+  if (startParam) {
+    // 正则表达式检查startParam是否全部由大写字母或大写字母与数字组成
+    const isUpperCaseOrDigits = /^[A-Z0-9]+$/.test(startParam);
+
+    if (isUpperCaseOrDigits) {
+      campaignSource = "share";
+      campaignMedium = startParam;
+    } else {
+      campaignSource = startParam;
+    }
+  }
+  console.log("campaignSource:",campaignSource);
+  console.log("campaignMedium:",campaignMedium);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-3WZ8DT6BC2', {
+    'campaign_source': campaignSource, // 动态设置campaign_source
+    'campaign_medium': campaignMedium // 动态设置campaign_medium
+  });
+</script>
+
 </body>
 
 </html>
