@@ -21,7 +21,7 @@
         container.style.height = (Telegram.WebApp.viewportStableHeight - 10) + "px";
     </script> -->
 
-  <!--谷歌utm相关代码，引入js -->
+     <!--谷歌utm相关代码，引入js -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GGCVKCR28P"></script>
 </head>
 
@@ -265,6 +265,9 @@
             )
         }
   </script>
+
+
+<!-- 谷歌utm相关代码：判断startParam，如果startparam的值都是大写字母或者大写字母和数字的组合，则campaign_source=share，campaign_medium=startParam，如果不是，则campaign_source=startParam，campaign_medium为空 -->
 <script>
   // 获取并打印当前窗口的 URL
   const currentUrl = window.location.href;
@@ -302,7 +305,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-GGCVKCR28P', {
+    gtag('config', 'G-GGCVKCR28P', {
     'user_id': userId,
     'campaign_source': campaignSource, // 动态设置campaign_source
     'campaign_medium': campaignMedium // 动态设置campaign_medium
