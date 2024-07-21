@@ -3,6 +3,7 @@
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-MCBHJHGXES"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script>
         // 获取并打印当前窗口的 URL
         const currentUrl = window.location.href;
@@ -115,7 +116,7 @@
         <h1>Modals</h1>
         <button onclick="Telegram.WebApp.showAlert('Hello World!');">Launch Alert</button>
         <button onclick="showPopup();">Launch Popup</button>
-
+        <button onclick="showRewardAd();">Reward AD</button>
         <h1>Links</h1>
         <ul>
             <li>
@@ -196,6 +197,32 @@
         Telegram.WebApp.onEvent('themeChanged', function() {
             document.body.setAttribute('style', '--bg-color:' + Telegram.WebApp.backgroundColor);
         });
+        //初始化adsgram广告
+        const adBlockId = "1044"; // 确保这是正确的blockId
+        const AdController = window.Adsgram.init({ 
+            blockId: adBlockId,
+            debug: true,
+            debugBannerType: "FullscreenMedia"
+         });
+
+        // 展示奖励广告
+        function showRewardAd() {
+            AdController.show().then((result) => {
+                if (result.done) {
+                    // 用户观看了完整广告
+                    console.log("用户观看了完整广告");
+                    // 这里添加给予用户奖励的逻辑
+                } else {
+                    // 用户没有观看完整广告
+                    console.log("用户没有观看完整广告");
+                    // 可以选择不给予奖励或进行其他处理
+                }
+            }).catch((error) => {
+                // 广告展示过程中出现错误
+                console.error("广告展示过程中出现错误:", error);
+                // 这里可以添加错误处理的逻辑
+            });
+        }
 
     </script>
 
