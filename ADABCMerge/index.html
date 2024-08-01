@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name='viewport'
+          content='width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no' />
+    <meta name='apple-mobile-web-app-capable' content='yes' />
+    <meta name='full-screen' content='true' />
+    <meta name='x5-fullscreen' content='true' />
+    <meta name='360-fullscreen' content='true' />
+    <title>ABC Merge Fight</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+    <script src="TemplateData/bundle.js"></script>
+    <!-- <script>
+          var container = document.querySelector("#unity-container");
+          container.style.width = window.innerWidth + "px";
+          container.style.height = (Telegram.WebApp.viewportStableHeight - 10) + "px";
+      </script> -->
+    <!--谷歌utm相关代码，引入js -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GGCVKCR28P"></script>
+</head>
+
+<body>
+  <div id="unity-container" class="unity-desktop" style="width:100%; height:100%">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="unity-loading-bar">
+      <div id="unity-logo"></div>
+      <div id="unity-progress-bar-empty">
+        <div id="unity-progress-bar-full"></div>
+      </div>
+    </div>
+    <!-- <div id="unity-warning"> </div> -->
+    <!-- <div id="unity-footer">
+        <div id="unity-webgl-logo"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">fish-client</div>
+      </div> -->
+  </div>
+  <script>
+    var container = document.querySelector("#unity-container");
+    var canvas = document.querySelector("#unity-canvas");
+    var loadingBar = document.querySelector("#unity-loading-bar");
+    var progressBarFull = document.querySelector("#unity-progress-bar-full");
+    function ChangeCanvas() {
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = Telegram.WebApp.viewportStableHeight + "px";
+      container.style.width = window.innerWidth + "px";
+      container.style.height = Telegram.WebApp.viewportStableHeight + "px";
+    }
+    Telegram.WebApp.themeParams.bg_color = "#000000";
+    Telegram.WebApp.enableClosingConfirmation();
+    //var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+    // var warningBanner = document.querySelector("#unity-warning");
+    // #if SHOW_DIAGNOSTICS
+    //       var diagnostics_icon = document.getElementById("diagnostics-icon");
+    // #endif
+
+    // Shows a temporary message banner/ribbon for a few seconds, or
+    // a permanent error message on top of the canvas if type=='error'.
+    // If type=='warning', a yellow highlight color is used.
+    // Modify or remove this function to customize the visually presented
+    // way that non-critical warnings and error messages are presented to the
+    // user.
+    // function unityShowBanner(msg, type) {
+    //   function updateBannerVisibility() {
+    //     warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+    //   }
+    //   var div = document.createElement('div');
+    //   div.innerHTML = msg;
+    //   warningBanner.appendChild(div);
+    //   if (type == 'error') div.style = 'background: red; padding: 10px;';
+    //   else {
+    //     if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+    //     setTimeout(function() {
+    //       warningBanner.removeChild(div);
+    //       updateBannerVisibility();
+    //     }, 5000);
+    //   }
+    //   updateBannerVisibility();
+    // }
+    // Telegram.WebApp.onEvent("viewportChanged",(isStateStable)=>{
+    //   if(Telegram.WebApp.isExpanded && isStateStable){
+    //     SetScreen();
+    //   }
+    // });
+    // function SetScreen(){
+    //   canvas.style.width = window.innerWidth + "px";
+    //   canvas.style.height = (Telegram.WebApp.viewportStableHeight - 10) + "px";
+    //   container.style.width = window.innerWidth + "px";
+    //   container.style.height = (Telegram.WebApp.viewportStableHeight - 10) + "px";
+    // }
+   
+
+
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/webgl.loader.js";
+    var config = {
+      dataUrl: buildUrl + "/webgl.data",
+      frameworkUrl: buildUrl + "/webgl.framework.js",
+        codeUrl: buildUrl + "/webgl.wasm",
+        streamingAssetsUrl: "StreamingAssets" ,
+      companyName: "rongzong",
+    productName: "ABC Merge Fight",
+    productVersion: "2.0",
+    // showBanner: unityShowBanner,
+    matchWebGLToCanvasSize: true, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+      devicePixelRatio: 720 / window.innerWidth, // Uncomment this to override low DPI rendering on high DPI displays.
+    };
+    Telegram.WebApp.onEvent("viewportChanged", (isStateStable) => {
+      if (isStateStable) {
+        ChangeCanvas();
+        document.body.style.overflow = "hidden";
+      }
+    })
+    const overflow = 1
+    document.body.style.overflowY = 'hidden'
+    document.body.style.marginTop = `${overflow}px`
+    document.body.style.height = window.innerHeight + overflow + "px"
+    document.body.style.paddingBottom = `${overflow}px`
+    window.scrollTo(0, overflow)
+    // By default, Unity keeps WebGL canvas render target size matched with
+    // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+    // Set this to false if you want to decouple this synchronization from
+    // happening inside the engine, and you would instead like to size up
+    // the canvas DOM size and WebGL render target sizes yourself.
+    // config.matchWebGLToCanvasSize = false;
+
+    //       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    //         // Mobile device style: fill the whole browser client area with the game canvas:
+
+    //         var meta = document.createElement('meta');
+    //         meta.name = 'viewport';
+    //         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+    //         document.getElementsByTagName('head')[0].appendChild(meta);
+    //         container.className = "unity-mobile";
+    //         canvas.className = "unity-mobile";
+
+    //         // To lower canvas resolution on mobile devices to gain some
+    //         // performance, uncomment the following line:
+    //         // config.devicePixelRatio = 1;
+
+    // #if SHOW_DIAGNOSTICS
+    //         // position the diagnostics icon in the corner on the canvas
+    //         diagnostics_icon.style.position = "fixed";
+    //         diagnostics_icon.style.bottom = "10px";
+    //         diagnostics_icon.style.right = "0px";
+    //         canvas.after(diagnostics_icon);
+    // #endif
+
+    //       } else {
+    //         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+
+    //         canvas.style.width = "540px";
+    //         canvas.style.height = "960px";
+    //       }
+
+
+    // #if BACKGROUND_FILENAME
+    //       canvas.style.background = "url('" + buildUrl + "/') center / cover";
+    // #endif
+    loadingBar.style.display = "block";
+
+
+      var myGameInstance = null;
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = () => {
+      window["Telegram"].WebApp.expand();
+      window["Telegram"].WebApp.ready();
+      
+      createUnityInstance(canvas, config, (progress) => {
+        progressBarFull.style.width = 100 * progress + "%";
+      }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          myGameInstance = unityInstance;
+      }).catch((message) => {
+        alert(message);
+      });
+    };
+    document.documentElement.addEventListener('touchmove', (e)=>{e.preventDefault()}, { passive: false });
+    document.body.appendChild(script);
+    ChangeCanvas();
+  </script>
+  <script>
+    function openLink(str){
+      Telegram.WebApp.openLink(str);
+    }
+    function share(text) {
+      // if(!navigator.share) return;
+      // navigator.share({
+      //   title: 'Aquarium Clicker Game',
+      //   text: text,
+      //   url: 'https://t.me/what2d',
+      // })
+    };
+    function getStartParams() {
+      return Telegram.WebApp.initDataUnsafe.start_param;
+    }
+    function OpenTgLink(url) {
+      console.log("OpenTgLink:"+url);
+      Telegram.WebApp.openTelegramLink(url);
+    }
+    function CloseAppJs() {
+      Telegram.WebApp.close();
+    }
+    function login() {
+      return Telegram.WebApp.initData + "\n\n" + JSON.stringify({
+        Id: Telegram.WebApp.initDataUnsafe.user.id,
+        IsBot: Telegram.WebApp.initDataUnsafe.user.is_bot,
+        FirstName: Telegram.WebApp.initDataUnsafe.user.first_name,
+        LastName: Telegram.WebApp.initDataUnsafe.user.last_name,
+        Username: Telegram.WebApp.initDataUnsafe.user.username,
+        LanguageCode: Telegram.WebApp.initDataUnsafe.user.language_code,
+        IsPremium: Telegram.WebApp.initDataUnsafe.user.is_premium,
+        AddedToAttachmentMenu: Telegram.WebApp.initDataUnsafe.user.added_to_attachment_menu,
+        AllowsWriteToPm: Telegram.WebApp.initDataUnsafe.user.allows_write_to_pm,
+        PhotoUrl: Telegram.WebApp.initDataUnsafe.user.photo_url
+      });
+    }
+    function copy(e){
+      e && writeText(e).then(()=>{
+                console.log("write text success")
+            }
+            ).catch(()=>{
+                this.execCopy(e).then(()=>{
+                    console.log("exec copy success")
+                }
+                ).catch(()=>{
+                    console.log("exec copy faile")
+                }
+                )
+            }
+            )
+    }
+    function writeText(o) {
+            return new Promise((e,t)=>{
+                navigator && navigator.clipboard ? navigator.clipboard.writeText(o).then(()=>{
+                    e()
+                }
+                ).catch(()=>{
+                    console.log("writeText error"),
+                    t()
+                }
+                ) : t()
+            }
+            )
+        }
+      function  execCopy(n) {
+            return new Promise((e,t)=>{
+                let o = document.createElement("textarea");
+                o.value = n,
+                o.style.position = "absolute",
+                o.style.opacity = "0",
+                o.style.left = "-999999px",
+                o.style.top = "-999999px",
+                document.body.appendChild(o),
+                o.focus(),
+                o.select();
+                var a = document.execCommand("copy");
+                o.remove(),
+                (a ? e : t)()
+            }
+            )
+        }
+  </script>
+
+
+<!-- 谷歌utm相关代码：判断startParam，如果startparam的值都是大写字母或者大写字母和数字的组合，则campaign_source=share，campaign_medium=startParam，如果不是，则campaign_source=startParam，campaign_medium为空 -->
+<script>
+  // 获取并打印当前窗口的 URL
+  const currentUrl = window.location.href;
+  console.log("当前窗口的 URL:", currentUrl);
+  // 初始化并获取参数
+  Telegram.WebApp.ready();
+  const initData = Telegram.WebApp.initDataUnsafe;
+  const userId = initData.user ? initData.user.id : null;//获取用户ID
+  if (userId) {
+      console.log("User ID:", userId);
+  } else {
+      console.log("User ID not found");
+  }
+  const startParam = initData && initData.start_param;
+  console.log("initData:", initData);
+  console.log("start_param:", startParam);
+
+  // 新增逻辑判断
+  let campaignSource = "";
+  let campaignMedium = "";
+
+  if (startParam) {
+    // 正则表达式检查startParam是否全部由大写字母或大写字母与数字组成
+    const isUpperCaseOrDigits = /^[A-Z0-9]+$/.test(startParam);
+
+    if (isUpperCaseOrDigits) {
+      campaignSource = "share";
+      campaignMedium = startParam;
+    } else {
+      campaignSource = startParam;
+    }
+  }
+  console.log("campaignSource:",campaignSource);
+  console.log("campaignMedium:",campaignMedium);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+    gtag('config', 'G-GGCVKCR28P', {
+    'user_id': userId,
+    'campaign_source': campaignSource, // 动态设置campaign_source
+    'campaign_medium': campaignMedium // 动态设置campaign_medium
+  });
+</script>
+
+
+    <script>
+        //初始化adsgram广告
+        const adBlockId = "1045"; // 确保这是正确的blockId
+        const AdController = window.Adsgram.init({
+            blockId: adBlockId,
+            debug: true,
+            debugBannerType: "RewardedVideo"
+        });
+
+        // 展示奖励广告
+        function showRewardAd() {
+            AdController.show().then((result) => {
+                if (result.done) {
+                    // 用户观看了完整广告
+                    console.log("用户观看了完整广告");
+                    // 这里添加给予用户奖励的逻辑
+                    myGameInstance.SendMessage('Canvas', 'RewardCallBack');
+                } else {
+                    // 用户没有观看完整广告
+                    console.log("用户没有观看完整广告");
+                    // 可以选择不给予奖励或进行其他处理
+                }
+            }).catch((error) => {
+                // 广告展示过程中出现错误
+                console.error("广告展示过程中出现错误:", error);
+                // 这里可以添加错误处理的逻辑
+            });
+        }
+        // 展示奖励广告
+        function showRewardAd1() {
+            AdController.show().then((result) => {
+                if (result.done) {
+                    // 用户观看了完整广告
+                    console.log("用户观看了完整广告");
+                    // 这里添加给予用户奖励的逻辑
+                    myGameInstance.SendMessage('Canvas', 'RewardCallBack1');
+                } else {
+                    // 用户没有观看完整广告
+                    console.log("用户没有观看完整广告");
+                    // 可以选择不给予奖励或进行其他处理
+                }
+            }).catch((error) => {
+                // 广告展示过程中出现错误
+                console.error("广告展示过程中出现错误:", error);
+                // 这里可以添加错误处理的逻辑
+            });
+        }
+    </script>
+
+</body>
+
+</html>
