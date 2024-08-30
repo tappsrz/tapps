@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <p id="name"></p>
+</body>
+<script>
+  document.getElementById("name").innerHTML = JSON.stringify(Telegram.WebApp.initDataUnsafe.user) + ";\n" + Telegram.WebApp.initData;
+  // function OpenTgLink() {  
+  //   var url = "https://t.me/share/url?url=https%3a%2f%2fmarkdown.com.cn%2fassets%2fimg%2fphilly-magic-garden.9c0b4415.jpg";
+  //   Telegram.WebApp.openTelegramLink(url);
+  // }
+</script>
+</html>
