@@ -1418,12 +1418,12 @@ require.register("pinusnode-pinus-jsclient-websocket/lib/pinus-client.js", funct
 
   pinus.init = function(params, cb){
     initCallback = cb;
-    var host = params.host;
-    var port = params.port;
-    var session = params.session;
-    var token = params.token;
+    var host = params.host.trim();
+    var port = params.port.trim();
+    var session = params.session.trim();
+    var token = params.token.trim();
 
-    var url = 'ws://' + host;
+    var url = 'wss://' + host;
     if(port) {
       url +=  ':' + port;
     }
