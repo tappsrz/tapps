@@ -1644,7 +1644,8 @@ require.register("pinusnode-pinus-jsclient-websocket/lib/pinus-client.js", funct
   var processMessage = function(pinus, msg) {
     if(!msg.id) {
       // server push message
-      pinus.emit(msg.route, msg.body);
+        pinus.emit(msg.route, msg.body);
+        console.log("serverpush : msg.route " + msg.route +"  msg.body  "+msg.body);
       return;
     }
 
