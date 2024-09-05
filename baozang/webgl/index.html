@@ -165,6 +165,9 @@
     // #if BACKGROUND_FILENAME
     //       canvas.style.background = "url('" + buildUrl + "/') center / cover";
     // #endif
+
+      var myunity;
+
     loadingBar.style.display = "block";
 
     var script = document.createElement("script");
@@ -176,7 +179,8 @@
       createUnityInstance(canvas, config, (progress) => {
         progressBarFull.style.width = 100 * progress + "%";
       }).then((unityInstance) => {
-        loadingBar.style.display = "none";
+          loadingBar.style.display = "none";
+          myunity = unityInstance;
       }).catch((message) => {
         alert(message);
       });
@@ -186,6 +190,20 @@
     ChangeCanvas();
   </script>
   <script>
+
+      document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState == "visible") {
+              //alert('浏览器进入用户视野中');
+              console.log("浏览器进入用户视野中");
+              myunity.SendMessage("SoundManager","ResumeBGM");
+          } else {
+              //alert('浏览器消失用户视野中');
+              console.log("浏览器消失用户视野中");
+              myunity.SendMessage("SoundManager", "PauseBGM");
+          }
+      })
+
+
       var pinus = window.pinus;
 
     function openLink(str){
